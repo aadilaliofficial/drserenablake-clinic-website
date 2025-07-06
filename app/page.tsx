@@ -54,7 +54,7 @@ export default function Home() {
             <p className="text-sm mb-1 text-yellow-800 font-medium bg-yellow-100 px-2 py-1 inline-block rounded">
               About Therapist: Dr. Serena Blake, PsyD (Clinical Psychologist)
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Hi I'm Serena Blake</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Hi I&apos;m Serena Blake</h2>
             <p className="mb-4">
               Dr. Serena Blake is a licensed <strong>clinical psychologist (PsyD)</strong> based in Los Angeles, CA,
               with <strong>eight years of experience and over 500 client sessions.</strong>
@@ -125,7 +125,6 @@ export default function Home() {
             Fill out the form and I’ll reach out within one business day. Your message is safe and private.
           </p>
 
-          {/* Pricing Section */}
           <div className="text-center text-xl md:text-2xl font-bold text-green-900 mb-8">
             <p>$200 / Individual Session</p>
             <p>$240 / Couples Session</p>
@@ -135,7 +134,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === Map & Contact Details === */}
+      {/* === Map & Contact Info === */}
       <section className="bg-white py-20 px-4">
         <div className="max-w-4xl mx-auto space-y-12">
           <div className="rounded-lg overflow-hidden shadow-md border border-gray-300">
@@ -199,14 +198,14 @@ function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target
+    const { name, value, type, checked } = e.target
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }))
   }
 
-  const validate = () => {
+  const validate = (): Record<string, string> => {
     const newErrors: Record<string, string> = {}
     if (!form.name.trim()) newErrors.name = 'Name is required'
     if (!form.phone.trim()) newErrors.phone = 'Phone is required'
@@ -218,7 +217,7 @@ function ContactForm() {
     return newErrors
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
