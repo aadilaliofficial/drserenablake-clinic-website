@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
         <div className="bg-black/40 absolute inset-0"></div>
         <div className="relative z-10 max-w-2xl">
           <p className="text-sm md:text-base text-gray-200 mb-2">
-            Christian Counseling Services in Richmond &amp; Central Virginia
+            Christian Counseling Services in Richmond & Central Virginia
           </p>
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Professional Counseling for Christian Healing and Growth
@@ -51,7 +52,6 @@ export default function Home() {
           <div className="flex-shrink-0 w-64 h-72 rounded-xl overflow-hidden border-4 border-white shadow-md">
             <Image src="/images/about.jpg" width={256} height={288} alt="About Ellie" />
           </div>
-
           <div className="flex-1">
             <p className="text-sm mb-1 text-yellow-800 font-medium bg-yellow-100 px-2 py-1 inline-block rounded">
               About Therapist: Dr. Serena Blake, PsyD (Clinical Psychologist)
@@ -97,7 +97,7 @@ export default function Home() {
             ].map(({ title, desc, img }, i) => (
               <div key={i} className="flex flex-col items-center text-gray-800">
                 <div className="w-52 h-52 rounded-full overflow-hidden shadow-lg mb-4">
-                  <Image src={img} alt={title} width={208} height={208} className="w-full h-full object-cover" />
+                  <Image src={img} alt={title} width={208} height={208} className="object-cover w-full h-full" />
                 </div>
                 <h3 className="font-semibold mb-2 text-lg text-center">{title}</h3>
                 <p className="text-sm text-center">{desc}</p>
@@ -127,7 +127,6 @@ export default function Home() {
             Fill out the form and I’ll reach out within one business day. Your message is safe and private.
           </p>
 
-          {/* Pricing Section */}
           <div className="text-center text-xl md:text-2xl font-bold text-green-900 mb-8">
             <p>$200 / Individual Session</p>
             <p>$240 / Couples Session</p>
@@ -137,13 +136,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === Map & Contact Details === */}
+      {/* === Map Section === */}
       <section className="bg-white py-20 px-4">
         <div className="max-w-4xl mx-auto space-y-12">
-          {/* Map */}
           <div className="rounded-lg overflow-hidden shadow-md border border-gray-300">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.086263938949!2d-118.26173698478214!3d34.0772240805936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c78d8e3eaf37%3A0x13a801ad2c56cde0!2s1287%20Maplewood%20Dr%2C%20Los%20Angeles%2C%20CA%2090026%2C%20USA!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=..."
               width="100%"
               height="400"
               loading="lazy"
@@ -153,7 +151,6 @@ export default function Home() {
             ></iframe>
           </div>
 
-          {/* Contact Info */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-gray-800 space-y-4">
             <h3 className="text-2xl font-bold">Dr. Serena Blake, PsyD (Clinical Psychologist)</h3>
             <p><strong>📍 Location:</strong> 1287 Maplewood Drive, Los Angeles, CA 90026</p>
@@ -168,8 +165,8 @@ export default function Home() {
             <div>
               <p><strong>🕒 Office Hours:</strong></p>
               <ul className="list-disc ml-5">
-                <li><strong>In-person:</strong> Tue &amp; Thu, 10 AM–6 PM</li>
-                <li><strong>Virtual via Zoom:</strong> Mon, Wed &amp; Fri, 1 PM–5 PM</li>
+                <li><strong>In-person:</strong> Tue & Thu, 10 AM–6 PM</li>
+                <li><strong>Virtual via Zoom:</strong> Mon, Wed & Fri, 1 PM–5 PM</li>
               </ul>
             </div>
             <p><strong>🧠 Experience:</strong> 8 years of practice, 500+ sessions</p>
@@ -180,7 +177,7 @@ export default function Home() {
   )
 }
 
-// === FAQ Accordion ===
+// FAQItem Component
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false)
   return (
@@ -197,7 +194,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   )
 }
 
-// === Contact Form Component ===
+// ContactForm Component
 function ContactForm() {
   const [form, setForm] = useState({
     name: '',
@@ -210,15 +207,16 @@ function ContactForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target
-    const isCheckbox = type === 'checkbox'
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = e.target
+    const { name, value, type } = target
+
+    const isCheckbox = (target: any): target is HTMLInputElement =>
+      'checked' in target && type === 'checkbox'
 
     setForm((prev) => ({
       ...prev,
-      [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      [name]: isCheckbox(target) ? target.checked : value,
     }))
   }
 
@@ -234,14 +232,13 @@ function ContactForm() {
     return newErrors
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
     } else {
       alert('Form submitted successfully!')
-      // Handle form submission logic here (API call)
     }
   }
 
@@ -259,7 +256,7 @@ function ContactForm() {
           {type === 'textarea' ? (
             <textarea
               name={name}
-              value={form[name as keyof typeof form] as string}
+              value={(form as any)[name]}
               onChange={handleChange}
               className="w-full border border-green-700 px-4 py-2 rounded-md mt-1"
               placeholder={placeholder}
@@ -269,7 +266,7 @@ function ContactForm() {
             <input
               type={type}
               name={name}
-              value={form[name as keyof typeof form] as string}
+              value={(form as any)[name]}
               onChange={handleChange}
               className="w-full border border-green-700 px-4 py-2 rounded-md mt-1"
               placeholder={placeholder}
