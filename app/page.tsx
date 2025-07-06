@@ -56,7 +56,7 @@ export default function Home() {
             <p className="text-sm mb-1 text-yellow-800 font-medium bg-yellow-100 px-2 py-1 inline-block rounded">
               About Therapist: Dr. Serena Blake, PsyD (Clinical Psychologist)
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Hi I&apos;m Serena Blake</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Hi I'm Serena Blake</h2>
             <p className="mb-4">
               Dr. Serena Blake is a licensed <strong>clinical psychologist (PsyD)</strong> based in Los Angeles, CA,
               with <strong>eight years of experience and over 500 client sessions.</strong>
@@ -73,7 +73,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === Other Sections (Services, FAQ, Contact, Map) are unchanged and assumed valid */}
+      {/* === Other Sections (Services, FAQ, Contact, Map) should be added here again if needed === */}
     </main>
   )
 }
