@@ -9,11 +9,9 @@ export default function Home() {
       {/* === Hero Section === */}
       <section
         className="relative h-screen bg-cover bg-center flex items-center justify-center text-white text-center px-4"
-        style={{
-          backgroundImage: "url('/images/hero-bg.jpg')",
-        }}
+        style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
       >
-        <div className="bg-black/40 absolute inset-0"></div>
+        <div className="bg-black/40 absolute inset-0" />
         <div className="relative z-10 max-w-2xl">
           <p className="text-sm md:text-base text-gray-200 mb-2">
             Christian Counseling Services in Richmond & Central Virginia
@@ -97,7 +95,7 @@ export default function Home() {
             ].map(({ title, desc, img }, i) => (
               <div key={i} className="flex flex-col items-center text-gray-800">
                 <div className="w-52 h-52 rounded-full overflow-hidden shadow-lg mb-4">
-                  <img src={img} alt={title} className="w-full h-full object-cover" />
+                  <Image src={img} width={208} height={208} alt={title} className="object-cover w-full h-full" />
                 </div>
                 <h3 className="font-semibold mb-2 text-lg text-center">{title}</h3>
                 <p className="text-sm text-center">{desc}</p>
@@ -140,7 +138,6 @@ export default function Home() {
       {/* === Map & Contact Details === */}
       <section className="bg-white py-20 px-4">
         <div className="max-w-4xl mx-auto space-y-12">
-          {/* Map */}
           <div className="rounded-lg overflow-hidden shadow-md border border-gray-300">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.086263938949!2d-118.26173698478214!3d34.0772240805936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c78d8e3eaf37%3A0x13a801ad2c56cde0!2s1287%20Maplewood%20Dr%2C%20Los%20Angeles%2C%20CA%2090026%2C%20USA!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
@@ -153,18 +150,11 @@ export default function Home() {
             ></iframe>
           </div>
 
-          {/* Contact Info */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md text-gray-800 space-y-4">
             <h3 className="text-2xl font-bold">Dr. Serena Blake, PsyD (Clinical Psychologist)</h3>
             <p><strong>📍 Location:</strong> 1287 Maplewood Drive, Los Angeles, CA 90026</p>
-            <p>
-              <strong>📞 Phone:</strong>{' '}
-              <a href="tel:+13235550192" className="text-blue-600 underline">(323) 555-0192</a>
-            </p>
-            <p>
-              <strong>📧 Email:</strong>{' '}
-              <a href="mailto:serena@blakepsychology.com" className="text-blue-600 underline">serena@blakepsychology.com</a>
-            </p>
+            <p><strong>📞 Phone:</strong> <a href="tel:+13235550192" className="text-blue-600 underline">(323) 555-0192</a></p>
+            <p><strong>📧 Email:</strong> <a href="mailto:serena@blakepsychology.com" className="text-blue-600 underline">serena@blakepsychology.com</a></p>
             <div>
               <p><strong>🕒 Office Hours:</strong></p>
               <ul className="list-disc ml-5">
@@ -180,7 +170,6 @@ export default function Home() {
   )
 }
 
-// FAQ Accordion
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false)
   return (
@@ -197,7 +186,6 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   )
 }
 
-// Contact Form Component (unchanged)
 function ContactForm() {
   const [form, setForm] = useState({
     name: '',
@@ -208,18 +196,18 @@ function ContactForm() {
     agree: false,
   })
 
-  const [errors, setErrors] = useState<any>({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }))
   }
 
   const validate = () => {
-    const newErrors: any = {}
+    const newErrors: Record<string, string> = {}
     if (!form.name.trim()) newErrors.name = 'Name is required'
     if (!form.phone.trim()) newErrors.phone = 'Phone is required'
     if (!form.email.trim()) newErrors.email = 'Email is required'
@@ -230,14 +218,13 @@ function ContactForm() {
     return newErrors
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
     } else {
       alert('Form submitted successfully!')
-      // API call logic here
     }
   }
 
@@ -255,7 +242,7 @@ function ContactForm() {
           {type === 'textarea' ? (
             <textarea
               name={name}
-              value={(form as any)[name]}
+              value={form[name as keyof typeof form] as string}
               onChange={handleChange}
               className="w-full border border-green-700 px-4 py-2 rounded-md mt-1"
               placeholder={placeholder}
@@ -265,7 +252,7 @@ function ContactForm() {
             <input
               type={type}
               name={name}
-              value={(form as any)[name]}
+              value={form[name as keyof typeof form] as string}
               onChange={handleChange}
               className="w-full border border-green-700 px-4 py-2 rounded-md mt-1"
               placeholder={placeholder}
